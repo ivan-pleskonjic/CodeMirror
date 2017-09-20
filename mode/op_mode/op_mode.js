@@ -31,23 +31,16 @@ CodeMirror.defineMode("op_mode", function(config, parserConfig) {
     function f(type) {return {type: type, style: "function"};}
     var A = kw("keyword a"), B = kw("keyword b"), C = kw("keyword c");
     var operator = kw("operator"), atom = {type: "atom", style: "atom"};
-
+    var type = {type: "variable", style: "variable-3"};
     var jsKeywords = {
-      "if": kw("if"), "fi": kw('fi'), "foreach": kw("foreach"), "then": kw("then"), "end": kw("end"), "while": A, "with": A, "else": B, "do": B, "try": B, "finally": B,
-      "return": C, "break": C, "continue": C, "new": kw("new"), "delete": C, "throw": C, "debugger": C,
-      "var": kw("var"), "const": kw("var"), "let": kw("var"),
-      "function": kw("function"), "catch": kw("catch"),
-      "for": kw("for"), "switch": kw("switch"), "case": kw("case"), "default": kw("default"),
-      "in": operator, "typeof": operator, "instanceof": operator,
-      "true": atom, "false": atom, "null": atom, "undefined": atom, "NaN": atom, "Infinity": atom,
-      "this": kw("this"), "class": kw("class"), "super": kw("atom"),
-      "yield": C, "export": kw("export"), "import": kw("import"), "extends": C,
-      "await": C, "async": kw("async"),
+      "if": kw("if"), "fi": kw('fi'), "foreach": kw("foreach"), "then": kw("then"), "end": kw("end"), "else": B,
+      "do": B, "return": C, "true": atom, "false": atom,
 
       "DROP": operator, "RESCHEDULE": operator, "ACCEPT": operator, "REJECT": operator, "ACK": operator,
       "NAK": operator, "REQUEST": operator, "REPLY_REQUEST": operator, "MARKER": operator,
       "SESSION": operator, "PROFILE": operator, "POLICY": operator, "EXTVARS": operator,
       "SESSIONVARS": operator, "PROXY_REQUEST": operator, "ORIGIN": operator,
+      "as": operator,
 
       "date": f("function"), "setAction": f("function"), "addAttribute": f("function"), "setAttribute": f("function"), "delAttribute": f("function"),
       "getAttribute": f("function"), "getCredit": f("function"), "setCredit": f("function"), "setProfilePassword": f("function"), "setProfileCSID": f("function"),
@@ -56,38 +49,12 @@ CodeMirror.defineMode("op_mode", function(config, parserConfig) {
       "compare": f("compare"), "B": f("B"), "HEX": f("HEX"), "time": f("time"), "explode": f("explode"),
       "strpos": f("strpos"), "substr": f("substr"), "strlen": f("strlen"), "strreplace": f("str_replace"), "strtolower": f("strtolower"), "strtoupper": f("strtoupper"),
       "round": f("round"), "hex2bin": f("hex2bin"), "systemLog": f("systemLog"), "getSessionByIP": f("getSessionByIP"), "getSessionByIPv6": f("getSessionByIPv6"),
-      "year": f("year"), "month": f("month"), "day": f("day"), "hour": f("hour"), "minute": f("minute"), "second": f("second")
+      "year": f("year"), "month": f("month"), "day": f("day"), "hour": f("hour"), "minute": f("minute"), "second": f("second"),
+
+      // types
+      "string": type, "number": type, "boolean": type, "any": type
 
     };
-
-    // Extend the 'normal' keywords with the TypeScript language extensions
-    if (isTS) {
-      var type = {type: "variable", style: "variable-3"};
-      var tsKeywords = {
-        // object-like things
-        "interface": kw("class"),
-        "implements": C,
-        "namespace": C,
-        "module": kw("module"),
-        "enum": kw("module"),
-
-        // scope modifiers
-        "public": kw("modifier"),
-        "private": kw("modifier"),
-        "protected": kw("modifier"),
-        "abstract": kw("modifier"),
-
-        // operators
-        "as": operator,
-
-        // types
-        "string": type, "number": type, "boolean": type, "any": type
-      };
-
-      for (var attr in tsKeywords) {
-        jsKeywords[attr] = tsKeywords[attr];
-      }
-    }
 
     return jsKeywords;
   }();
